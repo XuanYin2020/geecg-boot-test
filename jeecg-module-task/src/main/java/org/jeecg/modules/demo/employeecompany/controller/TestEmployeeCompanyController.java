@@ -149,7 +149,14 @@ public class TestEmployeeCompanyController extends JeecgController<TestEmployeeC
 		}
 		return Result.OK(testEmployeeCompany);
 	}
-	
+
+	@ApiOperation(value = "员工和公司-通过员工的id查询", notes = "员工和公司-通过员工的id查询")
+	@GetMapping(value="/queryByEmployeeID")
+	public Result<List<String>> queryByEmployeeID(@RequestParam(name="id",required=true) String employeeId){
+		log.info(employeeId);
+		List<String> companyId =  testEmployeeCompanyService.getByEmployeeID(employeeId);
+		return Result.ok(companyId);
+	}
     /**
     * 导出excel
     *
