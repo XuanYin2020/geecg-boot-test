@@ -71,4 +71,9 @@ public class TestEmployee implements Serializable {
 	@Excel(name = "地址", width = 15)
     @ApiModelProperty(value = "地址")
     private java.lang.String aaddress;
+
+    /**头像*/
+    @Excel(name = "头像", width = 15)
+    @ApiModelProperty(value = "头像")
+    private java.lang.String images;
 }
