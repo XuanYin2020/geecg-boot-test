@@ -1,9 +1,6 @@
 package org.jeecg.modules.demo.company.controller;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -21,6 +18,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 
+import org.jeecg.modules.demo.employee.entity.TestEmployee;
+import org.jeecg.modules.demo.employee.service.ITestEmployeeService;
+import org.jeecg.modules.demo.employeecompany.service.ITestEmployeeCompanyService;
 import org.jeecgframework.poi.excel.ExcelImportUtil;
 import org.jeecgframework.poi.excel.def.NormalExcelConstants;
 import org.jeecgframework.poi.excel.entity.ExportParams;
@@ -59,10 +59,13 @@ public class TestCompanyController extends JeecgController<TestCompany, ITestCom
 
 	 @Autowired
 	 private RestTemplate restTemplate;
-	 private String s;
 
+	 @Autowired
+	 private ITestEmployeeCompanyService testEmployeeCompanyService;
 
-	 /**
+	 @Autowired
+	 private ITestEmployeeService testEmployeeService;
+	/**
 	 * 分页列表查询
 	 *
 	 * @param testCompany
@@ -169,37 +172,20 @@ public class TestCompanyController extends JeecgController<TestCompany, ITestCom
 	 //@AutoLog(value = "公司信息-通过id查询")
 	 @ApiOperation(value="公司信息-通过公司id查询员工", notes="公司信息-通过公司id查询员工")
 	 @GetMapping(value = "/queryCompanyEmployeeById")
-	 public Result<List<Object>> queryCompanyEmployeeById(@RequestParam(name="id",required=true) String id) {
-		 log.info(s,id);
-		 //获取公司下，员工的id list
-		 String url = "http://localhost:8080/jeecg-boot/employeecompany/testEmployeeCompany/" +
-				 "queryByCompanyID?id={id}";
-		 //Header
-		 HttpHeaders headers = new HttpHeaders();
-		 headers.add("X-Access-Token",
-				 "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9." +
-						 "eyJleHAiOjE2OTg5MzY4MzEsInVzZXJuYW1lIjoiYWRtaW4ifQ." +
-						 "sZJgLdH43YaUmGKMW0DqvpZG75lQ5EZ9UqoKBpQ4WUk");
-		 HttpEntity httpEntity = new HttpEntity(headers);
-		 //请求
-		 ResponseEntity<Result> exchange = restTemplate.exchange(url, HttpMethod.GET, httpEntity,
-				 Result.class,id);
-		 Result body = exchange.getBody();
-		 Object companyIdObject = body.getResult();
-		 List<String> employeeIds = (List<String>)companyIdObject;
+	 public Result<List<TestEmployee>> queryCompanyEmployeeById(@RequestParam(name="id",required=true) String id) {
+		 log.info("公司信息-通过公司id查询员工"+id);
+		 //1. 获取公司下，员工的id list
+		 List<String> employeeIds =  testEmployeeCompanyService.queryByCompanyID(id);
 		 log.info("employeecompany远程调用数据信息：{}", employeeIds.toString());
 
 		 //根据employee的id获得员工信息
-		 log.info("根据employee的id获得公司的信息");
-		 String url2 = "http://localhost:8080/jeecg-boot/employee/testEmployee/queryById?id={id}";
-		 List<Object> reObject = new LinkedList<>();
+
+		 List<TestEmployee> employees = new ArrayList<>();
 		 employeeIds.forEach(employeeId->
-			 reObject.add(restTemplate.exchange(url2, HttpMethod.GET, httpEntity, Result.class,employeeId)
-					 .getBody()
-					 .getResult())
+				 employees.add(testEmployeeService.getById(employeeId))
 		 );
-		 log.info("employee远程调用数据信息：{}", reObject.toString());
-		 return Result.OK(reObject);
+		 log.info("根据公司id獲取員工的信息",employees.toString());
+		 return Result.OK(employees);
 	}
     /**
     * 导出excel
