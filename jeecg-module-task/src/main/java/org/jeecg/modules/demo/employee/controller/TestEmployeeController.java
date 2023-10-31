@@ -185,7 +185,7 @@ public class TestEmployeeController extends JeecgController<TestEmployee, ITestE
 		 HttpEntity httpEntity = new HttpEntity(headers);
 		 //请求
 		 ResponseEntity<Result> exchange = restTemplate.exchange(url, HttpMethod.GET, httpEntity,
-				 												Result.class,"1718775881526206466");
+				 												Result.class,id);
 		 Result body = exchange.getBody();
 		 Object companyIdObject = body.getResult();
 		 List<String> companyIds = (List<String>)companyIdObject;

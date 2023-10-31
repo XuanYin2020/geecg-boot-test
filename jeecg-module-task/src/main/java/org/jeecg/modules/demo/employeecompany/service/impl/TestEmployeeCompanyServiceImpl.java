@@ -40,4 +40,19 @@ public class TestEmployeeCompanyServiceImpl extends ServiceImpl<TestEmployeeComp
 
         return reCompanyIdList;
     }
+
+    @Override
+    public List<String> queryByCompanyID(String companyId) {
+        QueryWrapper<TestEmployeeCompany> companyQueryWrapper = new QueryWrapper<>();
+        companyQueryWrapper.eq("company_id", companyId);
+        List<TestEmployeeCompany> employeeCompanyList = testEmployeeCompanyMapper.selectList(companyQueryWrapper);
+
+        log.info(employeeCompanyList.toString());
+        List<String> reEmployeeIdList = new ArrayList<>();
+        employeeCompanyList.forEach(employeeCompany->reEmployeeIdList.add(employeeCompany.getEmployeeId()));
+        log.info(reEmployeeIdList.toString());
+
+        return reEmployeeIdList;
+
+    }
 }
