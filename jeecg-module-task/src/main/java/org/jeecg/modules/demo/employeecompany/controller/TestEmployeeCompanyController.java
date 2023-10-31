@@ -176,6 +176,20 @@ public class TestEmployeeCompanyController extends JeecgController<TestEmployeeC
 		 List<String> employeeId =  testEmployeeCompanyService.queryByCompanyID(companyId);
 		 return Result.ok(employeeId);
 	 }
+	 /**
+	  * 通过company的id, 查询id
+	  *
+	  * @param companyId
+	  * @return
+	  */
+	 @ApiOperation(value = "员工和公司-通过公司的id查询entity的id", notes = "员工和公司-通过公司的id查询entity的id")
+	 @GetMapping(value="/qurryIdByCompany")
+	 public Result<List<String>> qurryIdByCompany(@RequestParam(name="id",required=true) String companyId){
+		 log.info("通过company的id, 查询id");
+		 List<String> entityId =  testEmployeeCompanyService.qurryIdByCompany(companyId);
+
+		 return Result.ok(entityId);
+	 }
 
     /**
     * 导出excel

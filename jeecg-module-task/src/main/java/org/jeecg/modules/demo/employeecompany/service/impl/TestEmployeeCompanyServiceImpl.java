@@ -55,4 +55,16 @@ public class TestEmployeeCompanyServiceImpl extends ServiceImpl<TestEmployeeComp
         return reEmployeeIdList;
 
     }
+
+    @Override
+    public List<String> qurryIdByCompany(String companyId) {
+        QueryWrapper<TestEmployeeCompany> companyQueryWrapper = new QueryWrapper<>();
+        companyQueryWrapper.eq("company_id", companyId);
+        List<TestEmployeeCompany> employeeCompanyList = testEmployeeCompanyMapper.selectList(companyQueryWrapper);
+
+        List<String> reEmployeeIdList = new ArrayList<>();
+        employeeCompanyList.forEach(employeeCompany->reEmployeeIdList.add(employeeCompany.getId()));
+
+        return reEmployeeIdList;
+    }
 }

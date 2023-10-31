@@ -20,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.jeecg.modules.demo.employee.entity.TestEmployee;
 import org.jeecg.modules.demo.employee.service.ITestEmployeeService;
+import org.jeecg.modules.demo.employeecompany.entity.TestEmployeeCompany;
 import org.jeecg.modules.demo.employeecompany.service.ITestEmployeeCompanyService;
 import org.jeecgframework.poi.excel.ExcelImportUtil;
 import org.jeecgframework.poi.excel.def.NormalExcelConstants;
@@ -95,10 +96,20 @@ public class TestCompanyController extends JeecgController<TestCompany, ITestCom
 	 */
 	@AutoLog(value = "公司信息-添加")
 	@ApiOperation(value="公司信息-添加", notes="公司信息-添加")
-	@RequiresPermissions("company:test_company:add")
+	//@RequiresPermissions("company:test_company:add")
 	@PostMapping(value = "/add")
 	public Result<String> add(@RequestBody TestCompany testCompany) {
 		testCompanyService.save(testCompany);
+		//添加是新的公司，直接添加相关的employee
+		String curEmployeeStr = testCompany.getEmployee();
+		String[] curEmployees = curEmployeeStr.split(",");
+		for(String curEmployee:curEmployees){
+			log.info("curEmployee:"+curEmployee);
+			TestEmployeeCompany addEmployeeCompany = new TestEmployeeCompany();
+			addEmployeeCompany.setCompanyId(testCompany.getId());
+			addEmployeeCompany.setEmployeeId(curEmployee);
+			testEmployeeCompanyService.save(addEmployeeCompany);
+		}
 		return Result.OK("添加成功！");
 	}
 	
@@ -110,10 +121,29 @@ public class TestCompanyController extends JeecgController<TestCompany, ITestCom
 	 */
 	@AutoLog(value = "公司信息-编辑")
 	@ApiOperation(value="公司信息-编辑", notes="公司信息-编辑")
-	@RequiresPermissions("company:test_company:edit")
+	//@RequiresPermissions("company:test_company:edit")
 	@RequestMapping(value = "/edit", method = {RequestMethod.PUT,RequestMethod.POST})
 	public Result<String> edit(@RequestBody TestCompany testCompany) {
 		testCompanyService.updateById(testCompany);
+		//TODO 公司信息中添加了员工雇佣信息，需要更新employeecompany表格
+		//1. 删除employeecompany表格中和company相关的所有employee信息
+		String companyId = testCompany.getId();
+		log.info("companyId:"+companyId);
+		List<String> employeeCompanyIds =  testEmployeeCompanyService.qurryIdByCompany(companyId);
+		log.info("employeeCompanyIds:"+employeeCompanyIds.toString());
+		employeeCompanyIds.forEach(employeeCompanyId->
+				testEmployeeCompanyService.removeById(employeeCompanyId)
+		);
+		//2. 争对当前的雇佣信息，添加companyid 和 employeid的组合
+		String curEmployeeStr = testCompany.getEmployee();
+		String[] curEmployees = curEmployeeStr.split(",");
+		for(String curEmployee:curEmployees){
+			log.info("curEmployee:"+curEmployee);
+			TestEmployeeCompany addEmployeeCompany = new TestEmployeeCompany();
+			addEmployeeCompany.setCompanyId(companyId);
+			addEmployeeCompany.setEmployeeId(curEmployee);
+			testEmployeeCompanyService.save(addEmployeeCompany);
+		}
 		return Result.OK("编辑成功!");
 	}
 	
@@ -125,7 +155,7 @@ public class TestCompanyController extends JeecgController<TestCompany, ITestCom
 	 */
 	@AutoLog(value = "公司信息-通过id删除")
 	@ApiOperation(value="公司信息-通过id删除", notes="公司信息-通过id删除")
-	@RequiresPermissions("company:test_company:delete")
+	//@RequiresPermissions("company:test_company:delete")
 	@DeleteMapping(value = "/delete")
 	public Result<String> delete(@RequestParam(name="id",required=true) String id) {
 		testCompanyService.removeById(id);
@@ -140,7 +170,7 @@ public class TestCompanyController extends JeecgController<TestCompany, ITestCom
 	 */
 	@AutoLog(value = "公司信息-批量删除")
 	@ApiOperation(value="公司信息-批量删除", notes="公司信息-批量删除")
-	@RequiresPermissions("company:test_company:deleteBatch")
+	//@RequiresPermissions("company:test_company:deleteBatch")
 	@DeleteMapping(value = "/deleteBatch")
 	public Result<String> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
 		this.testCompanyService.removeByIds(Arrays.asList(ids.split(",")));
@@ -193,7 +223,7 @@ public class TestCompanyController extends JeecgController<TestCompany, ITestCom
     * @param request
     * @param testCompany
     */
-    @RequiresPermissions("company:test_company:exportXls")
+    //@RequiresPermissions("company:test_company:exportXls")
     @RequestMapping(value = "/exportXls")
     public ModelAndView exportXls(HttpServletRequest request, TestCompany testCompany) {
         return super.exportXls(request, testCompany, TestCompany.class, "公司信息");
@@ -206,7 +236,7 @@ public class TestCompanyController extends JeecgController<TestCompany, ITestCom
     * @param response
     * @return
     */
-    @RequiresPermissions("company:test_company:importExcel")
+    //@RequiresPermissions("company:test_company:importExcel")
     @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
     public Result<?> importExcel(HttpServletRequest request, HttpServletResponse response) {
         return super.importExcel(request, response, TestCompany.class);

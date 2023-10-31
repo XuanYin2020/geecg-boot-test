@@ -98,7 +98,7 @@ public class TestEmployeeController extends JeecgController<TestEmployee, ITestE
 	 */
 	@AutoLog(value = "人员信息-添加")
 	@ApiOperation(value="人员信息-添加", notes="人员信息-添加")
-	@RequiresPermissions("employee:test_employee:add")
+	//@RequiresPermissions("employee:test_employee:add")
 	@PostMapping(value = "/add")
 	public Result<String> add(@RequestBody TestEmployee testEmployee) {
 		testEmployeeService.save(testEmployee);
@@ -113,7 +113,7 @@ public class TestEmployeeController extends JeecgController<TestEmployee, ITestE
 	 */
 	@AutoLog(value = "人员信息-编辑")
 	@ApiOperation(value="人员信息-编辑", notes="人员信息-编辑")
-	@RequiresPermissions("employee:test_employee:edit")
+	//@RequiresPermissions("employee:test_employee:edit")
 	@RequestMapping(value = "/edit", method = {RequestMethod.PUT,RequestMethod.POST})
 	public Result<String> edit(@RequestBody TestEmployee testEmployee) {
 		testEmployeeService.updateById(testEmployee);
@@ -128,7 +128,7 @@ public class TestEmployeeController extends JeecgController<TestEmployee, ITestE
 	 */
 	@AutoLog(value = "人员信息-通过id删除")
 	@ApiOperation(value="人员信息-通过id删除", notes="人员信息-通过id删除")
-	@RequiresPermissions("employee:test_employee:delete")
+	//@RequiresPermissions("employee:test_employee:delete")
 	@DeleteMapping(value = "/delete")
 	public Result<String> delete(@RequestParam(name="id",required=true) String id) {
 		testEmployeeService.removeById(id);
@@ -143,7 +143,7 @@ public class TestEmployeeController extends JeecgController<TestEmployee, ITestE
 	 */
 	@AutoLog(value = "人员信息-批量删除")
 	@ApiOperation(value="人员信息-批量删除", notes="人员信息-批量删除")
-	@RequiresPermissions("employee:test_employee:deleteBatch")
+	//@RequiresPermissions("employee:test_employee:deleteBatch")
 	@DeleteMapping(value = "/deleteBatch")
 	public Result<String> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
 		this.testEmployeeService.removeByIds(Arrays.asList(ids.split(",")));
@@ -200,7 +200,7 @@ public class TestEmployeeController extends JeecgController<TestEmployee, ITestE
     * @param request
     * @param testEmployee
     */
-    @RequiresPermissions("employee:test_employee:exportXls")
+    //@RequiresPermissions("employee:test_employee:exportXls")
     @RequestMapping(value = "/exportXls")
     public ModelAndView exportXls(HttpServletRequest request, TestEmployee testEmployee) {
         return super.exportXls(request, testEmployee, TestEmployee.class, "人员信息");
@@ -213,7 +213,7 @@ public class TestEmployeeController extends JeecgController<TestEmployee, ITestE
     * @param response
     * @return
     */
-    @RequiresPermissions("employee:test_employee:importExcel")
+    //@RequiresPermissions("employee:test_employee:importExcel")
     @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
     public Result<?> importExcel(HttpServletRequest request, HttpServletResponse response) {
         return super.importExcel(request, response, TestEmployee.class);

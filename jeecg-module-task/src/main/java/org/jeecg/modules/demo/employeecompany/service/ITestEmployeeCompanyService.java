@@ -17,4 +17,6 @@ public interface ITestEmployeeCompanyService extends IService<TestEmployeeCompan
     List<String> getByEmployeeID(String employeeId);
 
     List<String> queryByCompanyID(String companyId);
+
+    List<String> qurryIdByCompany(String companyId);
 }
