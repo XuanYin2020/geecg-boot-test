@@ -8,6 +8,7 @@ import java.net.URLDecoder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.codehaus.jettison.json.JSONObject;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
@@ -84,6 +85,7 @@ public class TestEmployeeController extends JeecgController<TestEmployee, ITestE
 								   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
 								   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
 								   HttpServletRequest req) {
+		log.info("Get all the employee information");
 		QueryWrapper<TestEmployee> queryWrapper = QueryGenerator.initQueryWrapper(testEmployee, req.getParameterMap());
 		Page<TestEmployee> page = new Page<TestEmployee>(pageNo, pageSize);
 		IPage<TestEmployee> pageList = testEmployeeService.page(page, queryWrapper);
@@ -101,6 +103,15 @@ public class TestEmployeeController extends JeecgController<TestEmployee, ITestE
 	//@RequiresPermissions("employee:test_employee:add")
 	@PostMapping(value = "/add")
 	public Result<String> add(@RequestBody TestEmployee testEmployee) {
+		// 获取到就职公司的ids,获取到公司的名字，设置
+		String[] companyIds = testEmployee.getCompanyIds().split(",");
+		String[] companyNames = new String[companyIds.length];
+		for (int i = 0; i < companyNames.length; i++) {
+			String companyId = companyIds[i];
+			companyNames[i] = testCompanyService.getById(companyId).getName();
+		}
+		String companyNameStr = StringUtils.join(companyNames, ",");
+		testEmployee.setCompanyName(companyNameStr);
 		testEmployeeService.save(testEmployee);
 		return Result.OK("添加成功！");
 	}
@@ -116,6 +127,16 @@ public class TestEmployeeController extends JeecgController<TestEmployee, ITestE
 	//@RequiresPermissions("employee:test_employee:edit")
 	@RequestMapping(value = "/edit", method = {RequestMethod.PUT,RequestMethod.POST})
 	public Result<String> edit(@RequestBody TestEmployee testEmployee) {
+		log.info("编辑人员信息");
+		// 获取到就职公司的ids,获取到公司的名字，设置
+		String[] companyIds = testEmployee.getCompanyIds().split(",");
+		String[] companyNames = new String[companyIds.length];
+		for (int i = 0; i < companyNames.length; i++) {
+			String companyId = companyIds[i];
+			companyNames[i] = testCompanyService.getById(companyId).getName();
+		}
+		String companyNameStr = StringUtils.join(companyNames, ",");
+		testEmployee.setCompanyName(companyNameStr);
 		testEmployeeService.updateById(testEmployee);
 		return Result.OK("编辑成功!");
 	}

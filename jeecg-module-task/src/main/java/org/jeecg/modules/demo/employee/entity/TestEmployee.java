@@ -76,4 +76,14 @@ public class TestEmployee implements Serializable {
     @Excel(name = "头像", width = 15)
     @ApiModelProperty(value = "头像")
     private java.lang.String images;
+
+    /**就职公司id*/
+    @Excel(name = "就职公司id", width = 15, dictTable = "test_company", dicText = "name", dicCode = "id")
+    @Dict(dictTable = "test_company", dicText = "name", dicCode = "id")
+    @ApiModelProperty(value = "就职公司id")
+    private java.lang.String companyIds;
+    /**就职公司名字*/
+    @Excel(name = "就职公司名字", width = 15)
+    @ApiModelProperty(value = "就职公司名字")
+    private java.lang.String companyName;
 }
