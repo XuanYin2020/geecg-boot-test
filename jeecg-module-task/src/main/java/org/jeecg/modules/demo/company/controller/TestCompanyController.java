@@ -130,8 +130,16 @@ public class TestCompanyController {
 		for(TestCompanyEmployee curCompanyEmployee:allCompanyEmployee){
 			//带更新的employee，更新companyid和name
 			TestEmployee curEmployee =testEmployeeService.getById(curCompanyEmployee.getEmployeeId());
-			curEmployee.setCompanyIds(curEmployee.getCompanyIds()+","+testCompany.getId());
-			curEmployee.setCompanyName(curEmployee.getCompanyName()+","+testCompany.getName());
+			String curCompanyIds = curEmployee.getCompanyIds();
+			if(!curCompanyIds.equals("")){
+				curEmployee.setCompanyIds(curCompanyIds+","+testCompany.getId());
+				curEmployee.setCompanyName(curEmployee.getCompanyName()+","+testCompany.getName());
+			}else{
+				curEmployee.setCompanyIds(testCompany.getId());
+				curEmployee.setCompanyName(testCompany.getName());
+			}
+
+
 			testEmployeeService.updateById(curEmployee);
 		}
 		return Result.OK("编辑成功!");

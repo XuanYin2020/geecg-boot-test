@@ -145,7 +145,7 @@ public class TestEmployeeController extends JeecgController<TestEmployee, ITestE
 		}
 		String companyNameStr = StringUtils.join(companyNames, ",");
 		testEmployee.setCompanyName(companyNameStr);
-		//TODO 员工添加就职公司，公司页面显示员工
+		//目的： 员工添加就职公司，公司页面显示员工
 		//对于每一个就职公司，添加该员工
 		for(String companyId:companyIds){
 			//争对testCompanyEmployee创建，companyID，emplyeeID
