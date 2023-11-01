@@ -37,18 +37,18 @@
 <script lang="ts" name="company-testCompany" setup>
   import {ref, computed, unref} from 'vue';
   import {BasicTable, useTable, TableAction} from '/@/components/Table';
-  import {useModal} from '/@/components/Modal';
   import { useListPage } from '/@/hooks/system/useListPage'
+  import {useModal} from '/@/components/Modal';
   import TestCompanyModal from './components/TestCompanyModal.vue'
   import {columns, searchFormSchema} from './TestCompany.data';
   import {list, deleteOne, batchDelete, getImportUrl,getExportUrl} from './TestCompany.api';
-  import { downloadFile } from '/@/utils/common/renderUtils';
+  import {downloadFile} from '/@/utils/common/renderUtils';
   import { useUserStore } from '/@/store/modules/user';
   const checkedKeys = ref<Array<string | number>>([]);
   const userStore = useUserStore();
   //注册model
   const [registerModal, {openModal}] = useModal();
-  //注册table数据
+   //注册table数据
   const { prefixCls,tableContext,onExportXls,onImportXls } = useListPage({
       tableProps:{
            title: '公司信息',
@@ -56,29 +56,29 @@
            columns,
            canResize:false,
            formConfig: {
-              //labelWidth: 120,
-              schemas: searchFormSchema,
-              autoSubmitOnEnter:true,
-              showAdvancedButton:true,
-              fieldMapToNumber: [
-              ],
-              fieldMapToTime: [
-              ],
+                //labelWidth: 120,
+                schemas: searchFormSchema,
+                autoSubmitOnEnter:true,
+                showAdvancedButton:true,
+                fieldMapToNumber: [
+                ],
+                fieldMapToTime: [
+                ],
             },
            actionColumn: {
-               width: 150,
+               width: 120,
                fixed:'right'
-            },
-      },
-       exportConfig: {
+           },
+        },
+        exportConfig: {
             name:"公司信息",
             url: getExportUrl,
-          },
-          importConfig: {
+        },
+        importConfig: {
             url: getImportUrl,
             success: handleSuccess
-          },
-  })
+        },
+    })
 
   const [registerTable, {reload},{ rowSelection, selectedRowKeys }] = tableContext
 
@@ -121,7 +121,7 @@
     * 批量删除事件
     */
   async function batchHandleDelete() {
-     await batchDelete({ids: selectedRowKeys.value}, handleSuccess);
+     await batchDelete({ids: selectedRowKeys.value},handleSuccess);
    }
    /**
     * 成功回调
@@ -140,24 +140,25 @@
          }
        ]
    }
-     /**
-        * 下拉操作栏
-        */
-  function getDropDownAction(record){
-       return [
-         {
-           label: '详情',
-           onClick: handleDetail.bind(null, record),
-         }, {
-           label: '删除',
-           popConfirm: {
-             title: '是否确认删除',
-             confirm: handleDelete.bind(null, record),
-           }
-         }
-       ]
-   }
 
+
+  /**
+   * 下拉操作栏
+   */
+  function getDropDownAction(record){
+    return [
+      {
+        label: '详情',
+        onClick: handleDetail.bind(null, record),
+      }, {
+        label: '删除',
+        popConfirm: {
+          title: '是否确认删除',
+          confirm: handleDelete.bind(null, record),
+        }
+      }
+    ]
+  }
 
 </script>
 

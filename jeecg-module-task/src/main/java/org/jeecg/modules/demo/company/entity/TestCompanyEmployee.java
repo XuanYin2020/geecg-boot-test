@@ -1,8 +1,6 @@
 package org.jeecg.modules.demo.company.entity;
 
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.util.Date;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -11,20 +9,21 @@ import lombok.Data;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.jeecgframework.poi.excel.annotation.Excel;
-import org.jeecg.common.aspect.annotation.Dict;
+import java.util.Date;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.io.UnsupportedEncodingException;
 
 /**
- * @Description: 公司信息
+ * @Description: 入职的员工
  * @Author: jeecg-boot
  * @Date:   2023-11-01
  * @Version: V1.0
  */
-@ApiModel(value="test_company对象", description="公司信息")
+@ApiModel(value="test_company_employee对象", description="入职的员工")
 @Data
-@TableName("test_company")
-public class TestCompany implements Serializable {
+@TableName("test_company_employee")
+public class TestCompanyEmployee implements Serializable {
     private static final long serialVersionUID = 1L;
 
 	/**主键*/
@@ -50,28 +49,21 @@ public class TestCompany implements Serializable {
 	/**所属部门*/
     @ApiModelProperty(value = "所属部门")
     private java.lang.String sysOrgCode;
-	/**公司名字*/
-	@Excel(name = "公司名字", width = 15)
-    @ApiModelProperty(value = "公司名字")
-    private java.lang.String name;
-	/**公司类型*/
-	@Excel(name = "公司类型", width = 15)
-    @ApiModelProperty(value = "公司类型")
-    private java.lang.String type;
-	/**地址*/
-	@Excel(name = "地址", width = 15)
-    @ApiModelProperty(value = "地址")
-    private java.lang.String address;
-	/**负责人*/
-	@Excel(name = "负责人", width = 15)
-    @ApiModelProperty(value = "负责人")
-    private java.lang.String ceo;
-	/**员工数量*/
-	@Excel(name = "员工数量", width = 15)
-    @ApiModelProperty(value = "员工数量")
-    private java.lang.Integer numberEmplyee;
-	/**联系信息*/
-	@Excel(name = "联系信息", width = 15)
-    @ApiModelProperty(value = "联系信息")
-    private java.lang.String contact;
+	/**公司的id*/
+    @ApiModelProperty(value = "公司的id")
+    private java.lang.String companyId;
+	/**员工id*/
+	@Excel(name = "员工id", width = 15, dictTable = "test_employee", dicText = "name", dicCode = "id")
+    @ApiModelProperty(value = "员工id")
+    private java.lang.String employeeId;
+	/**入职时间*/
+	@Excel(name = "入职时间", width = 15, format = "yyyy-MM-dd")
+	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @ApiModelProperty(value = "入职时间")
+    private java.util.Date takingTime;
+	/**入职部门*/
+	@Excel(name = "入职部门", width = 15)
+    @ApiModelProperty(value = "入职部门")
+    private java.lang.String partment;
 }

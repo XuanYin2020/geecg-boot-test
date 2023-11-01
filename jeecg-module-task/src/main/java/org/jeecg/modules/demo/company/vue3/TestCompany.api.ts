@@ -11,16 +11,23 @@ enum Api {
   deleteBatch = '/company/testCompany/deleteBatch',
   importExcel = '/company/testCompany/importExcel',
   exportXls = '/company/testCompany/exportXls',
+  testCompanyEmployeeList = '/company/testCompany/queryTestCompanyEmployeeByMainId',
 }
 /**
  * 导出api
  * @param params
  */
 export const getExportUrl = Api.exportXls;
+
 /**
  * 导入api
  */
 export const getImportUrl = Api.importExcel;
+/**
+ * 查询子表数据
+ * @param params
+ */
+export const testCompanyEmployeeList = Api.testCompanyEmployeeList;
 /**
  * 列表接口
  * @param params
