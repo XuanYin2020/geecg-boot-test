@@ -14,6 +14,8 @@ import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.modules.demo.company.entity.TestCompany;
+import org.jeecg.modules.demo.company.entity.TestCompanyEmployee;
+import org.jeecg.modules.demo.company.service.ITestCompanyEmployeeService;
 import org.jeecg.modules.demo.company.service.ITestCompanyService;
 import org.jeecg.modules.demo.employee.entity.TestEmployee;
 import org.jeecg.modules.demo.employee.service.ITestEmployeeService;
@@ -59,8 +61,8 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 @RequestMapping("/employee/testEmployee")
 @Slf4j
 public class TestEmployeeController extends JeecgController<TestEmployee, ITestEmployeeService> {
-	@Autowired
-	private ITestEmployeeService testEmployeeService;
+	 @Autowired
+	 private ITestEmployeeService testEmployeeService;
 
 	 @Autowired
 	 private RestTemplate restTemplate;
@@ -69,6 +71,9 @@ public class TestEmployeeController extends JeecgController<TestEmployee, ITestE
 	 private ITestEmployeeCompanyService testEmployeeCompanyService;
 	 @Autowired
 	 private ITestCompanyService testCompanyService;
+
+	 @Autowired
+	 private ITestCompanyEmployeeService testCompanyEmployeeService;
 	 /**
 	 * 分页列表查询
 	 *
@@ -189,7 +194,7 @@ public class TestEmployeeController extends JeecgController<TestEmployee, ITestE
 	}
 
 	 /**
-	  * 通过id,查询人员就职公司
+	  * 通过人员id,查询人员就职公司
 	  *
 	  * @param id
 	  * @return
@@ -197,21 +202,25 @@ public class TestEmployeeController extends JeecgController<TestEmployee, ITestE
 	 @ApiOperation(value="人员信息-通过id查询就职公司", notes="人员信息-通过id查询就职公司")
 	 @GetMapping(value = "/queryEmployeeCompanyById")
 	public Result<List<TestCompany>> queryEmployeeCompanyById(@RequestParam(name="id",required=true) String id){
-		 //1. 根据员工id查找公司id
-		 log.info("根据员工id查找公司id",id);
-		 List<String> companyIds =  testEmployeeCompanyService.getByEmployeeID(id);
-		 log.info("employeecompany远程调用数据信息：{}", companyIds.toString());
-
-		 //2.根据company的id获得公司的信息
-		 log.info("根据company的id获得公司的信息");
-		 //TODO 请求
-		 List<TestCompany> companys = new LinkedList<>();
-		 companyIds.forEach(companyId->
-				 companys.add(testCompanyService.getById(companyId))
-
-		 );
-		 log.info("company远程调用数据信息：{}", companys.toString());
-		 return Result.OK(companys);
+		 //1. 获取到所有的雇佣关系
+		 //company里面存储着雇佣的employee的信息，但是需要company的id才能找到,
+		 log.info("根据员工id查找公司id："+id);
+		 List<TestCompanyEmployee> allEmployees = testCompanyEmployeeService.getAll();
+		 log.info("招聘记录"+allEmployees.size());
+		 //2.检查雇佣关系里面的company_id和employee_id
+		 List<String> companyIds = new ArrayList<>();
+		 for(TestCompanyEmployee takingEmployee:allEmployees){
+			 if(takingEmployee.getEmployeeId().equals(id)){
+				 companyIds.add(takingEmployee.getCompanyId());
+			 }
+		 }
+		 log.info("公司ID："+companyIds.toString());
+		 //3.找到公司的entity
+		 List<TestCompany> companies = new ArrayList<>();
+		 for(String companyId:companyIds){
+			 companies.add(testCompanyService.getById(companyId));
+		 }
+		 return Result.OK(companies);
 	}
 
 

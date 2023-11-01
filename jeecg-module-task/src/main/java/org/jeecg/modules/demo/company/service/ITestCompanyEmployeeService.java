@@ -19,4 +19,9 @@ public interface ITestCompanyEmployeeService extends IService<TestCompanyEmploye
 	 * @return List<TestCompanyEmployee>
 	 */
 	public List<TestCompanyEmployee> selectByMainId(String mainId);
+
+	/**
+	 * 获得到所有的副表
+	 */
+	public List<TestCompanyEmployee> getAll();
 }

@@ -28,4 +28,9 @@ public interface TestCompanyEmployeeMapper extends BaseMapper<TestCompanyEmploye
    * @return List<TestCompanyEmployee>
    */
 	public List<TestCompanyEmployee> selectByMainId(@Param("mainId") String mainId);
+
+	/**
+	 * 获得副表的全部数据
+	 */
+	public List<TestCompanyEmployee> allTableValue();
 }

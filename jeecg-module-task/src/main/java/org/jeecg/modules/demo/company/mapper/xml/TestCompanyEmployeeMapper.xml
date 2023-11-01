@@ -13,4 +13,9 @@
 		FROM  test_company_employee
 		WHERE
 			 company_id = #{mainId} 	</select>
+	<select id="allTableValue" resultType="org.jeecg.modules.demo.company.entity.TestCompanyEmployee">
+		select *
+		from test_company_employee
+	</select>
+
 </mapper>
