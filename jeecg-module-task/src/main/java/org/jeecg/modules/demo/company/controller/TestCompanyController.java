@@ -99,6 +99,7 @@ public class TestCompanyController {
 		TestCompany testCompany = new TestCompany();
 		BeanUtils.copyProperties(testCompanyPage, testCompany);//拷贝属性
 		log.info("公司信息-添加");
+		testCompany.setNumberEmplyee(testCompanyPage.getTestCompanyEmployeeList().size());
 		testCompanyService.saveMain(testCompany, testCompanyPage.getTestCompanyEmployeeList());
 		return Result.OK("添加成功！");
 	}
@@ -122,7 +123,9 @@ public class TestCompanyController {
 			return Result.error("未找到对应数据");
 		}
 		//更新员工的信息
+		testCompany.setNumberEmplyee(testCompanyPage.getTestCompanyEmployeeList().size());//设置员工人数
 		testCompanyService.updateMain(testCompany, testCompanyPage.getTestCompanyEmployeeList());
+
 		//目的：公司添加了员工之后，员工页面直接展示
 		// 争对当前的testCompany，更新相关employee的信息
 		// 更新employee信息的就职公司信息:更新company id和company name
@@ -131,15 +134,13 @@ public class TestCompanyController {
 			//带更新的employee，更新companyid和name
 			TestEmployee curEmployee =testEmployeeService.getById(curCompanyEmployee.getEmployeeId());
 			String curCompanyIds = curEmployee.getCompanyIds();
-			if(!curCompanyIds.equals("")){
+			if(curCompanyIds!=null && !curCompanyIds.equals("")){
 				curEmployee.setCompanyIds(curCompanyIds+","+testCompany.getId());
 				curEmployee.setCompanyName(curEmployee.getCompanyName()+","+testCompany.getName());
 			}else{
 				curEmployee.setCompanyIds(testCompany.getId());
 				curEmployee.setCompanyName(testCompany.getName());
 			}
-
-
 			testEmployeeService.updateById(curEmployee);
 		}
 		return Result.OK("编辑成功!");
