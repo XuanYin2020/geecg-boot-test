@@ -134,9 +134,8 @@ public class TestEmployeeController extends JeecgController<TestEmployee, ITestE
 	public Result<String> edit(@RequestBody TestEmployee testEmployee) {
 		log.info("编辑人员信息:"+testEmployee.getCompanyIds());
 		// 获取到就职公司的ids,获取到公司的名字，设置
-		String[] companyIds = testEmployee.getCompanyIds().split(",");
-		String[] companyNames = new String[companyIds.length];
-		log.info("长度为："+companyNames.length);
+		String[] companyIds = testEmployee.getCompanyIds().split(",");//就职公司id
+		String[] companyNames = new String[companyIds.length];//就职公司姓名
 		for (int i = 0; i < companyNames.length; i++) {
 			String companyId = companyIds[i];
 			log.info("就职公司的id："+companyId);
@@ -146,6 +145,16 @@ public class TestEmployeeController extends JeecgController<TestEmployee, ITestE
 		}
 		String companyNameStr = StringUtils.join(companyNames, ",");
 		testEmployee.setCompanyName(companyNameStr);
+		//TODO 员工添加就职公司，公司页面显示员工
+		//对于每一个就职公司，添加该员工
+		for(String companyId:companyIds){
+			//争对testCompanyEmployee创建，companyID，emplyeeID
+			TestCompanyEmployee testCompanyEmployee = new TestCompanyEmployee();
+			testCompanyEmployee.setEmployeeId(testEmployee.getId());
+			testCompanyEmployee.setCompanyId(companyId);
+			testCompanyEmployeeService.save(testCompanyEmployee);
+		}
+
 		testEmployeeService.updateById(testEmployee);
 		return Result.OK("编辑成功!");
 	}
