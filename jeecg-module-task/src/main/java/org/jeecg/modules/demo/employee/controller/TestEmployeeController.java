@@ -152,6 +152,8 @@ public class TestEmployeeController extends JeecgController<TestEmployee, ITestE
 			TestCompanyEmployee testCompanyEmployee = new TestCompanyEmployee();
 			testCompanyEmployee.setEmployeeId(testEmployee.getId());
 			testCompanyEmployee.setCompanyId(companyId);
+			Date curDate = new Date();
+			testCompanyEmployee.setTakingTime(new Date());
 			testCompanyEmployeeService.save(testCompanyEmployee);
 		}
 
