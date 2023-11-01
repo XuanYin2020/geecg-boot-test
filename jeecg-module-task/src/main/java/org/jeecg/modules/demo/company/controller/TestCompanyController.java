@@ -12,6 +12,8 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.jeecg.modules.demo.employee.entity.TestEmployee;
+import org.jeecg.modules.demo.employee.service.ITestEmployeeService;
 import org.jeecgframework.poi.excel.ExcelImportUtil;
 import org.jeecgframework.poi.excel.def.NormalExcelConstants;
 import org.jeecgframework.poi.excel.entity.ExportParams;
@@ -59,7 +61,8 @@ public class TestCompanyController {
 	private ITestCompanyService testCompanyService;
 	@Autowired
 	private ITestCompanyEmployeeService testCompanyEmployeeService;
-	
+	 @Autowired
+	 private ITestEmployeeService testEmployeeService;
 	/**
 	 * 分页列表查询
 	 *
@@ -120,6 +123,17 @@ public class TestCompanyController {
 		}
 		//更新员工的信息
 		testCompanyService.updateMain(testCompany, testCompanyPage.getTestCompanyEmployeeList());
+		//目的：公司添加了员工之后，员工页面直接展示
+		// 争对当前的testCompany，更新相关employee的信息
+		// 更新employee信息的就职公司信息:更新company id和company name
+		List<TestCompanyEmployee> allCompanyEmployee= testCompanyPage.getTestCompanyEmployeeList();
+		for(TestCompanyEmployee curCompanyEmployee:allCompanyEmployee){
+			//带更新的employee，更新companyid和name
+			TestEmployee curEmployee =testEmployeeService.getById(curCompanyEmployee.getEmployeeId());
+			curEmployee.setCompanyIds(curEmployee.getCompanyIds()+","+testCompany.getId());
+			curEmployee.setCompanyName(curEmployee.getCompanyName()+","+testCompany.getName());
+			testEmployeeService.updateById(curEmployee);
+		}
 		return Result.OK("编辑成功!");
 	}
 	

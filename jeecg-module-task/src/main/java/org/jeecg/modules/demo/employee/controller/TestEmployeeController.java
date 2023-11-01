@@ -132,13 +132,17 @@ public class TestEmployeeController extends JeecgController<TestEmployee, ITestE
 	//@RequiresPermissions("employee:test_employee:edit")
 	@RequestMapping(value = "/edit", method = {RequestMethod.PUT,RequestMethod.POST})
 	public Result<String> edit(@RequestBody TestEmployee testEmployee) {
-		log.info("编辑人员信息");
+		log.info("编辑人员信息:"+testEmployee.getCompanyIds());
 		// 获取到就职公司的ids,获取到公司的名字，设置
 		String[] companyIds = testEmployee.getCompanyIds().split(",");
 		String[] companyNames = new String[companyIds.length];
+		log.info("长度为："+companyNames.length);
 		for (int i = 0; i < companyNames.length; i++) {
 			String companyId = companyIds[i];
-			companyNames[i] = testCompanyService.getById(companyId).getName();
+			log.info("就职公司的id："+companyId);
+			if(companyId!=""){
+				companyNames[i] = testCompanyService.getById(companyId).getName();
+			}
 		}
 		String companyNameStr = StringUtils.join(companyNames, ",");
 		testEmployee.setCompanyName(companyNameStr);
