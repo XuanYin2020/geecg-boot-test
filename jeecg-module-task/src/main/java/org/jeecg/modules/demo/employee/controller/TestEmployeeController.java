@@ -148,13 +148,17 @@ public class TestEmployeeController extends JeecgController<TestEmployee, ITestE
 		//目的： 员工添加就职公司，公司页面显示员工
 		//对于每一个就职公司，添加该员工
 		for(String companyId:companyIds){
-			//争对testCompanyEmployee创建，companyID，emplyeeID
+			//创建estCompanyEmployee对象，作为company的1对多的对象
 			TestCompanyEmployee testCompanyEmployee = new TestCompanyEmployee();
 			testCompanyEmployee.setEmployeeId(testEmployee.getId());
-			testCompanyEmployee.setCompanyId(companyId);
+			testCompanyEmployee.setCompanyId(companyId);//设置对应的外键
 			Date curDate = new Date();
 			testCompanyEmployee.setTakingTime(new Date());
 			testCompanyEmployeeService.save(testCompanyEmployee);
+			//update公司的就职人数
+			TestCompany companyEntity = testCompanyService.getById(companyId);
+			companyEntity.setNumberEmplyee(companyEntity.getNumberEmplyee()+1);
+			testCompanyService.updateById(companyEntity);
 		}
 
 		testEmployeeService.updateById(testEmployee);

@@ -93,7 +93,7 @@ public class TestCompanyController {
 	 */
 	@AutoLog(value = "公司信息-添加")
 	@ApiOperation(value="公司信息-添加", notes="公司信息-添加")
-    @RequiresPermissions("company:test_company:add")
+    //@RequiresPermissions("company:test_company:add")
 	@PostMapping(value = "/add")
 	public Result<String> add(@RequestBody TestCompanyPage testCompanyPage) {
 		TestCompany testCompany = new TestCompany();
@@ -112,7 +112,7 @@ public class TestCompanyController {
 	 */
 	@AutoLog(value = "公司信息-编辑")
 	@ApiOperation(value="公司信息-编辑", notes="公司信息-编辑")
-    @RequiresPermissions("company:test_company:edit")
+    //@RequiresPermissions("company:test_company:edit")
 	@RequestMapping(value = "/edit", method = {RequestMethod.PUT,RequestMethod.POST})
 	public Result<String> edit(@RequestBody TestCompanyPage testCompanyPage) {
 		log.info("公司信息-编辑");
@@ -154,7 +154,7 @@ public class TestCompanyController {
 	 */
 	@AutoLog(value = "公司信息-通过id删除")
 	@ApiOperation(value="公司信息-通过id删除", notes="公司信息-通过id删除")
-    @RequiresPermissions("company:test_company:delete")
+    //@RequiresPermissions("company:test_company:delete")
 	@DeleteMapping(value = "/delete")
 	public Result<String> delete(@RequestParam(name="id",required=true) String id) {
 		testCompanyService.delMain(id);
@@ -169,7 +169,7 @@ public class TestCompanyController {
 	 */
 	@AutoLog(value = "公司信息-批量删除")
 	@ApiOperation(value="公司信息-批量删除", notes="公司信息-批量删除")
-    @RequiresPermissions("company:test_company:deleteBatch")
+    //@RequiresPermissions("company:test_company:deleteBatch")
 	@DeleteMapping(value = "/deleteBatch")
 	public Result<String> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
 		this.testCompanyService.delBatchMain(Arrays.asList(ids.split(",")));
@@ -214,7 +214,7 @@ public class TestCompanyController {
     * @param request
     * @param testCompany
     */
-    @RequiresPermissions("company:test_company:exportXls")
+    //@RequiresPermissions("company:test_company:exportXls")
     @RequestMapping(value = "/exportXls")
     public ModelAndView exportXls(HttpServletRequest request, TestCompany testCompany) {
       // Step.1 组装查询条件查询数据
@@ -256,7 +256,7 @@ public class TestCompanyController {
     * @param response
     * @return
     */
-    @RequiresPermissions("company:test_company:importExcel")
+    //@RequiresPermissions("company:test_company:importExcel")
     @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
     public Result<?> importExcel(HttpServletRequest request, HttpServletResponse response) {
       MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
