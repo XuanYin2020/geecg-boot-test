@@ -24,4 +24,9 @@ public interface ITestCompanyEmployeeService extends IService<TestCompanyEmploye
 	 * 获得到所有的副表
 	 */
 	public List<TestCompanyEmployee> getAll();
+
+	/**
+	 * 添加一条记录
+	 */
+	public void addOneRecord(TestCompanyEmployee testCompanyEmployee);
 }

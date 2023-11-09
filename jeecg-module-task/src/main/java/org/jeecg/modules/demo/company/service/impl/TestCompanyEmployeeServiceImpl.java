@@ -6,7 +6,9 @@ import org.jeecg.modules.demo.company.entity.TestCompanyEmployee;
 import org.jeecg.modules.demo.company.mapper.TestCompanyEmployeeMapper;
 import org.jeecg.modules.demo.company.service.ITestCompanyEmployeeService;
 import org.springframework.stereotype.Service;
-import java.util.List;
+
+import java.util.*;
+
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -33,6 +35,21 @@ public class TestCompanyEmployeeServiceImpl extends ServiceImpl<TestCompanyEmplo
 		List<TestCompanyEmployee> testCompanyEmployees = testCompanyEmployeeMapper.allTableValue();
 		log.info(testCompanyEmployees.toString());
 		return testCompanyEmployees;
+
+    }
+
+    @Override
+    public void addOneRecord(TestCompanyEmployee testCompanyEmployee) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("companyId", testCompanyEmployee.getId());
+		params.put("employeeId",  testCompanyEmployee.getEmployeeId());
+		params.put("takingTime",testCompanyEmployee.getTakingTime());
+		params.put("partment", testCompanyEmployee.getPartment());
+		Random random = new Random();
+		int randomInt = random.nextInt();
+		params.put("id", String.valueOf( Math.abs(randomInt) ) );
+		log.info("id:"+Math.abs(randomInt) );
+		testCompanyEmployeeMapper.addOneRecord(params);
 
     }
 }

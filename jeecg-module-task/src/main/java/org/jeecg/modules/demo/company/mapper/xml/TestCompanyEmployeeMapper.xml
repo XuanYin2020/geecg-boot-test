@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.jeecg.modules.demo.company.mapper.TestCompanyEmployeeMapper">
+	<insert id="addOneRecord" parameterType="map">
+		INSERT INTO test_company_employee (id,employee_id, company_id, taking_time, partment)
+		VALUES (#{id},#{employeeId}, #{companyId}, #{takingTime}, #{partment})
+	</insert>
 
 	<delete id="deleteByMainId" parameterType="java.lang.String">
 		DELETE 

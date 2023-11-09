@@ -1,6 +1,9 @@
 package org.jeecg.modules.demo.company.mapper;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
+
 import org.jeecg.modules.demo.company.entity.TestCompanyEmployee;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
@@ -33,4 +36,14 @@ public interface TestCompanyEmployeeMapper extends BaseMapper<TestCompanyEmploye
 	 * 获得副表的全部数据
 	 */
 	public List<TestCompanyEmployee> allTableValue();
+
+
+	/**
+	 * 添加一条数据
+	 */
+	void addOneRecord(Map<String, Object> params);
+
+
+
+
 }

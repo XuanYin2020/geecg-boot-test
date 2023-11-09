@@ -103,6 +103,20 @@ public class TestCompanyController {
 		testCompanyService.saveMain(testCompany, testCompanyPage.getTestCompanyEmployeeList());
 		return Result.OK("添加成功！");
 	}
+
+	 /**
+	  * 添加新的员工
+	  */
+	 @AutoLog(value = "添加新的员工")
+	 @ApiOperation(value="添加新的员工", notes="添加新的员工")
+	 //@RequiresPermissions("company:test_company:edit")
+	 @RequestMapping(value = "/addOneEmployee", method = {RequestMethod.PUT,RequestMethod.POST})
+	public void addOneEmployee(@RequestBody TestCompanyEmployee testcompanyemployee){
+		 log.info("添加新的员工");
+		 log.info(testcompanyemployee.toString());
+		 testCompanyEmployeeService.addOneRecord(testcompanyemployee);
+
+	}
 	
 	/**
 	 *  编辑
@@ -116,6 +130,7 @@ public class TestCompanyController {
 	@RequestMapping(value = "/edit", method = {RequestMethod.PUT,RequestMethod.POST})
 	public Result<String> edit(@RequestBody TestCompanyPage testCompanyPage) {
 		log.info("公司信息-编辑");
+		log.info(testCompanyPage.toString());
 		TestCompany testCompany = new TestCompany();
 		BeanUtils.copyProperties(testCompanyPage, testCompany);
 		TestCompany testCompanyEntity = testCompanyService.getById(testCompany.getId());
@@ -133,6 +148,9 @@ public class TestCompanyController {
 		for(TestCompanyEmployee curCompanyEmployee:allCompanyEmployee){
 			//带更新的employee，更新companyid和name
 			TestEmployee curEmployee =testEmployeeService.getById(curCompanyEmployee.getEmployeeId());
+			if(curEmployee==null){
+				continue;
+			}
 			String curCompanyIds = curEmployee.getCompanyIds();
 			if(curCompanyIds!=null && !curCompanyIds.equals("")){
 				curEmployee.setCompanyIds(curCompanyIds+","+testCompany.getId());
