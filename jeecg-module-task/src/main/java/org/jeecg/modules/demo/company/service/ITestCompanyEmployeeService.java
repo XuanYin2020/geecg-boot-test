@@ -29,4 +29,9 @@ public interface ITestCompanyEmployeeService extends IService<TestCompanyEmploye
 	 * 添加一条记录
 	 */
 	public void addOneRecord(TestCompanyEmployee testCompanyEmployee);
+
+	/**
+	 * 根据id 删除一条记录
+	 */
+    public void deleteOneRecord(TestCompanyEmployee testcompanyemployee);
 }

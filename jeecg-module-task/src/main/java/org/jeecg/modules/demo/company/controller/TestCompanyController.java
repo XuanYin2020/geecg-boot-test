@@ -117,7 +117,20 @@ public class TestCompanyController {
 		 testCompanyEmployeeService.addOneRecord(testcompanyemployee);
 		 return Result.OK("添加成功!");
 	}
-	
+
+	 /**
+	  * 删除指定员工
+	  * 根据id删除company employee中的数据
+	  */
+	 @AutoLog(value = "删除指定员工")
+	 @ApiOperation(value="删除指定员工", notes="删除指定员工")
+	 //@RequiresPermissions("company:test_company:edit")
+	 @RequestMapping(value = "/deleteOneEmployee", method = {RequestMethod.PUT,RequestMethod.POST})
+	public Result<String> deleteOneEmployee(@RequestBody TestCompanyEmployee testcompanyemployee){
+		 log.info("删除指定Id员工");
+		 testCompanyEmployeeService.deleteOneRecord(testcompanyemployee);
+		 return Result.OK("删除成功!");
+	 }
 	/**
 	 *  编辑
 	 *

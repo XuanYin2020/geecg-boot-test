@@ -11,7 +11,14 @@
 		FROM  test_company_employee 
 		WHERE
 			 company_id = #{mainId} 	</delete>
-	
+	<delete id="deleteOneRecord" parameterType="java.lang.String">
+		DELETE
+		FROM  test_company_employee
+		WHERE
+			id = #{id}
+
+	</delete>
+
 	<select id="selectByMainId" parameterType="java.lang.String" resultType="org.jeecg.modules.demo.company.entity.TestCompanyEmployee">
 		SELECT * 
 		FROM  test_company_employee

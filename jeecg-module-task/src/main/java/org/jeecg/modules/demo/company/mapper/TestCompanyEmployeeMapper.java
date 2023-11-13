@@ -44,6 +44,5 @@ public interface TestCompanyEmployeeMapper extends BaseMapper<TestCompanyEmploye
 	void addOneRecord(Map<String, Object> params);
 
 
-
-
+    void deleteOneRecord(String id);
 }

@@ -52,4 +52,13 @@ public class TestCompanyEmployeeServiceImpl extends ServiceImpl<TestCompanyEmplo
 		testCompanyEmployeeMapper.addOneRecord(params);
 
     }
+
+    @Override
+    public void deleteOneRecord(TestCompanyEmployee testcompanyemployee) {
+		String id = testcompanyemployee.getId();
+		log.info("The id is:"+id);
+
+		testCompanyEmployeeMapper.deleteOneRecord(id);
+
+    }
 }
