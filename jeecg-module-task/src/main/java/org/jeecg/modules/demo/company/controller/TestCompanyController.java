@@ -111,11 +111,11 @@ public class TestCompanyController {
 	 @ApiOperation(value="添加新的员工", notes="添加新的员工")
 	 //@RequiresPermissions("company:test_company:edit")
 	 @RequestMapping(value = "/addOneEmployee", method = {RequestMethod.PUT,RequestMethod.POST})
-	public void addOneEmployee(@RequestBody TestCompanyEmployee testcompanyemployee){
+	public Result<String>  addOneEmployee(@RequestBody TestCompanyEmployee testcompanyemployee){
 		 log.info("添加新的员工");
 		 log.info(testcompanyemployee.toString());
 		 testCompanyEmployeeService.addOneRecord(testcompanyemployee);
-
+		 return Result.OK("添加成功!");
 	}
 	
 	/**
@@ -153,12 +153,13 @@ public class TestCompanyController {
 			}
 			String curCompanyIds = curEmployee.getCompanyIds();
 			if(curCompanyIds!=null && !curCompanyIds.equals("")){
-				curEmployee.setCompanyIds(curCompanyIds+","+testCompany.getId());
-				curEmployee.setCompanyName(curEmployee.getCompanyName()+","+testCompany.getName());
+				//curEmployee.setCompanyIds(curCompanyIds+","+testCompany.getId());
+				curEmployee.setCompanyName(testCompany.getName());
 			}else{
 				curEmployee.setCompanyIds(testCompany.getId());
 				curEmployee.setCompanyName(testCompany.getName());
 			}
+
 			testEmployeeService.updateById(curEmployee);
 		}
 		return Result.OK("编辑成功!");
