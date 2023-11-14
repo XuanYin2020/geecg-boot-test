@@ -240,6 +240,22 @@ public class TestCompanyController {
 		return Result.OK(testCompanyEmployeeList);
 	}
 
+	 /**
+	  * 通过id查询companyemployee表的内容
+	  *
+	  * @param id
+	  * @return
+	  */
+	 //@AutoLog(value = "通过id查询companyemployee表的内容")
+	 @ApiOperation(value="通过id查询companyemployee表的内容", notes="通过id查询companyemployee表的内容")
+	 @GetMapping(value = "/queryTestCompanyEmployeeById")
+	 public Result<TestCompanyEmployee> queryTestCompanyEmployeeById(@RequestParam(name="id",required=true) String id) {
+		 //List<TestCompanyEmployee> testCompanyEmployeeList = testCompanyEmployeeService.selectByMainId(id);
+		 log.info("id:"+id);
+		 TestCompanyEmployee testCompanyEmployeeList = testCompanyEmployeeService.selectById(id);
+		 return Result.OK(testCompanyEmployeeList);
+	 }
+
     /**
     * 导出excel
     *

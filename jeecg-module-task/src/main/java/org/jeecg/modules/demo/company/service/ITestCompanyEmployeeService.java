@@ -34,4 +34,11 @@ public interface ITestCompanyEmployeeService extends IService<TestCompanyEmploye
 	 * 根据id 删除一条记录
 	 */
     public void deleteOneRecord(TestCompanyEmployee testcompanyemployee);
+
+	/**
+	 * 根据子表id查询数据
+	 * @param id
+	 * @return
+	 */
+	TestCompanyEmployee selectById(String id);
 }

@@ -61,4 +61,11 @@ public class TestCompanyEmployeeServiceImpl extends ServiceImpl<TestCompanyEmplo
 		testCompanyEmployeeMapper.deleteOneRecord(id);
 
     }
+
+    @Override
+    public TestCompanyEmployee selectById(String id) {
+
+		TestCompanyEmployee testCompanyEmployee = testCompanyEmployeeMapper.selectById(id);
+		return testCompanyEmployee;
+    }
 }
