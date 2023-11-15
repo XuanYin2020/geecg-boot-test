@@ -5,6 +5,18 @@
 		INSERT INTO test_company_employee (id,employee_id, company_id, taking_time, partment)
 		VALUES (#{id},#{employeeId}, #{companyId}, #{takingTime}, #{partment})
 	</insert>
+	<update id="editOneRecord" parameterType="map">
+		UPDATE test_company_employee
+		<set>
+			<if test="companyId != null">company_id = #{companyId},</if>
+			<if test="employeeId != null">employee_id = #{employeeId},</if>
+			<if test="takingTime != null">taking_time = #{takingTime},</if>
+			<if test="partment != null">partment = #{partment},</if>
+		</set>
+		WHERE
+			id =#{id};
+
+	</update>
 
 	<delete id="deleteByMainId" parameterType="java.lang.String">
 		DELETE 

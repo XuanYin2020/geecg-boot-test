@@ -256,6 +256,22 @@ public class TestCompanyController {
 		 return Result.OK(testCompanyEmployeeList);
 	 }
 
+	 /**
+	  * 通过id,更新companyemployee表的内容
+	  *
+	  * @param
+	  * @return
+	  */
+	 //@AutoLog(value = "通过id,更新companyemployee表的内容")
+	 @ApiOperation(value="通过id,更新companyemployee表的内容", notes="通过id,更新companyemployee表的内容")
+	 @RequestMapping(value = "/editTestCompanyEmployeeById", method = {RequestMethod.PUT,RequestMethod.POST})
+	 public Result<String> editTestCompanyEmployeeById(@RequestBody TestCompanyEmployee testcompanyemployee) {
+		 log.info("编辑员工");
+		 log.info(testcompanyemployee.toString());
+		 testCompanyEmployeeService.editOneReocrd(testcompanyemployee);
+		 return Result.OK("编辑成功!");
+	 }
+
     /**
     * 导出excel
     *

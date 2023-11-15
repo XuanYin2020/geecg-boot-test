@@ -68,4 +68,15 @@ public class TestCompanyEmployeeServiceImpl extends ServiceImpl<TestCompanyEmplo
 		TestCompanyEmployee testCompanyEmployee = testCompanyEmployeeMapper.selectById(id);
 		return testCompanyEmployee;
     }
+
+	@Override
+	public void editOneReocrd(TestCompanyEmployee testcompanyemployee) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("id", testcompanyemployee.getId());
+		params.put("employeeId",  testcompanyemployee.getEmployeeId());
+		params.put("takingTime",testcompanyemployee.getTakingTime());
+		params.put("partment", testcompanyemployee.getPartment());
+
+		testCompanyEmployeeMapper.editOneRecord(params);
+	}
 }

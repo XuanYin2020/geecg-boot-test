@@ -45,4 +45,6 @@ public interface TestCompanyEmployeeMapper extends BaseMapper<TestCompanyEmploye
 
 
     void deleteOneRecord(String id);
+
+	void editOneRecord(Map<String, Object> params);
 }

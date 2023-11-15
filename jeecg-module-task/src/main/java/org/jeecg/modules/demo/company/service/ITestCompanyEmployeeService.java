@@ -41,4 +41,6 @@ public interface ITestCompanyEmployeeService extends IService<TestCompanyEmploye
 	 * @return
 	 */
 	TestCompanyEmployee selectById(String id);
+
+	void editOneReocrd(TestCompanyEmployee testcompanyemployee);
 }
